@@ -148,21 +148,71 @@ def try_handle_direct_action(user_input: str) -> Tuple[bool, Optional[str]]:
             return (True, f"Boss, here are your {p_res['total_projects']} projects in D:/Projects:\n{p_list}")
 
     # 9. Open Project or Desktop Application (100% Offline, ZERO API Key required!)
-    if any(k in msg for k in ["open", "launch", "start"]):
-        # A. Check for Project in specific IDE
-        projects_check = [
-            "technokart", "shiva-ai", "kisansathi", "tims", "portfolio",
-            "contentforge", "devflow", "internova", "iiit-delhi"
-        ]
-        target_project = None
-        for p in projects_check:
-            if p in msg:
-                target_project = p
-                break
+    if any(k in msg for k in ["open", "launch", "start", "khol"]):
+        # Check if Boss wants it in the same window / tab
+        same_window = any(
+            k in msg
+            for k in [
+                "same tab",
+                "same window",
+                "same vscode",
+                "along with",
+                "usi mai",
+                "usi me",
+                "ek sath",
+                "add folder",
+                "add to",
+            ]
+        )
+        ide = "antigravity" if "antigravity" in msg else "vscode"
 
-        if target_project:
-            ide = "antigravity" if "antigravity" in msg else "vscode"
-            return (True, open_project_in_ide(target_project, ide))
+        # Catalog of projects in D:/Projects (longest names first)
+        projects_catalog = [
+            "shivam-jaiswal portfolio",
+            "shivam jaiswal portfolio",
+            "shivam jaiswal",
+            "jharkhand civic issue",
+            "student-management-system",
+            "internova ai",
+            "contentforge",
+            "kisansathi",
+            "kisan sathi",
+            "technokart",
+            "techno card",
+            "devflow",
+            "internova",
+            "portfolio",
+            "shiva-ai",
+            "shiva",
+            "tims",
+            "iiit-delhi",
+            "iiit delhi",
+        ]
+
+        # Find ALL candidate projects mentioned in the message
+        matches_with_index = []
+        for p in projects_catalog:
+            idx = msg.find(p)
+            if idx != -1:
+                matches_with_index.append((idx, len(p), p))
+
+        if matches_with_index:
+            # Determine reference position of 'open' command
+            open_idx = msg.find("open")
+            if open_idx == -1:
+                open_idx = msg.find("khol")
+            if open_idx == -1:
+                open_idx = 0
+
+            # Filter candidates appearing after 'open'
+            after_open = [m for m in matches_with_index if m[0] >= open_idx]
+            candidates = after_open if after_open else matches_with_index
+
+            # Sort by lowest index (closest to 'open'), tie-break with longer string length
+            candidates.sort(key=lambda x: (x[0], -x[1]))
+            best_match = candidates[0][2]
+
+            return (True, open_project_in_ide(best_match, ide=ide, same_window=same_window))
 
         # B. Standalone IDEs or Apps
         if "antigravity" in msg:
