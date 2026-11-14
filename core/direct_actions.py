@@ -29,12 +29,47 @@ from skills.media_skills import (
 )
 
 
+def normalize_stt_text(text: str) -> str:
+    """Fixes common microphone / SpeechRecognition mishearings and Hinglish phrasing."""
+    t = text.lower()
+    
+    # Common STT phonetic replacements
+    replacements = {
+        "techno card": "technokart",
+        "techno cart": "technokart",
+        "technocart": "technokart",
+        "techno guard": "technokart",
+        "bs4": "vscode",
+        "bs 4": "vscode",
+        "bs code": "vscode",
+        "vs 4": "vscode",
+        "v s code": "vscode",
+        "vs cod": "vscode",
+        "vs-code": "vscode",
+        "anti gravity": "antigravity",
+        "anti-gravity": "antigravity",
+        "kisan sathi": "kisansathi",
+        "kisan saathi": "kisansathi",
+        "kisaan sathi": "kisansathi",
+        "thermal intelligence": "tims",
+        "kholo": "open",
+        "khol": "open",
+        "chalao": "open",
+        "band karo": "close",
+        "band kar": "close",
+        "hatao": "close",
+    }
+    for wrong, right in replacements.items():
+        t = t.replace(wrong, right)
+    return t
+
+
 def try_handle_direct_action(user_input: str) -> Tuple[bool, Optional[str]]:
     """
     Checks if user_input matches common desktop commands.
     Returns (handled: bool, response: Optional[str]).
     """
-    msg = user_input.strip().lower()
+    msg = normalize_stt_text(user_input.strip())
 
     # 1. Blocked Git Push check
     if "git push" in msg or "push to git" in msg or "push to github" in msg:
