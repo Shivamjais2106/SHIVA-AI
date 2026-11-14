@@ -78,8 +78,9 @@ def open_application(app_name: str) -> str:
         "file explorer": "explorer.exe",
         "settings": "start ms-settings:",
         "spotify": "cmd /c start spotify:",
-        "vscode": r'"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"',
-        "vs code": r'"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"',
+        "vscode": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
+        "vs code": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
+        "code": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
         "antigravity": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
         "antigravity ide": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
     }

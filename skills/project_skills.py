@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 PROJECTS_DIR = Path("D:/Projects")
-VSCODE_PATH = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
+VSCODE_PATH = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe"
 ANTIGRAVITY_PATH = r"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"
 
 
@@ -79,15 +79,14 @@ def open_project_in_ide(project_name: str, ide: str = "vscode", same_window: boo
             else:
                 return f"Antigravity IDE executable not found at {ANTIGRAVITY_PATH}."
         else:
-            # VS Code
+            # VS Code (bring to foreground using start)
             executable = VSCODE_PATH if os.path.exists(VSCODE_PATH) else "code"
-            # If same_window requested, use -a / --add to add folder to current window workspace!
             if same_window:
-                cmd = f'"{executable}" -a "{str(target_path)}"'
+                cmd = f'start "" "{executable}" -a "{str(target_path)}"'
                 subprocess.Popen(cmd, shell=True)
                 return f"Added '{target_path.name}' into your current VS Code workspace, Boss! 💻"
             else:
-                cmd = f'"{executable}" "{str(target_path)}"'
+                cmd = f'start "" "{executable}" "{str(target_path)}"'
                 subprocess.Popen(cmd, shell=True)
                 return f"Opened '{target_path.name}' in VS Code, Boss! 💻"
 

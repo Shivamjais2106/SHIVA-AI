@@ -215,6 +215,20 @@ def try_handle_direct_action(user_input: str) -> Tuple[bool, Optional[str]]:
             return (True, open_project_in_ide(best_match, ide=ide, same_window=same_window))
 
         # B. Standalone IDEs or Apps
+        if "terminal" in msg:
+            if "vs code" in msg or "vscode" in msg or "code" in msg:
+                open_application("vscode")
+                return (
+                    True,
+                    "Boss, VS Code is open! In VS Code, press Ctrl + ` (tilde) to open the integrated terminal, or simply tell me what command you want to run and I'll execute it right here! 🚀"
+                )
+            for p in ["technokart", "shiva-ai", "kisansathi", "tims", "devflow", "contentforge"]:
+                if p in msg:
+                    proj_path = PROJECTS_DIR / p
+                    subprocess.Popen(f'start "" wt.exe -d "{proj_path}"', shell=True)
+                    return (True, f"Opened Windows Terminal inside '{p}' folder, Boss! 💻")
+            return (True, open_application("terminal"))
+
         if "antigravity" in msg:
             return (True, open_application("antigravity"))
         elif "vscode" in msg or "vs code" in msg or "code" in msg:
