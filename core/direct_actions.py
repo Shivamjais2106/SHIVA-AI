@@ -112,24 +112,49 @@ def try_handle_direct_action(user_input: str) -> Tuple[bool, Optional[str]]:
             p_list = ", ".join(p_res.get("projects", []))
             return (True, f"Boss, here are your {p_res['total_projects']} projects in D:/Projects:\n{p_list}")
 
-    # 9. Open Project in IDE
-    # e.g. "open technokart in antigravity", "open portfolio in vscode"
-    if "open" in msg and any(ide in msg for ide in ["vscode", "vs code", "antigravity"]):
-        ide = "antigravity" if "antigravity" in msg else "vscode"
-        # Find project name
-        projects_check = ["technokart", "shiva-ai", "kisansathi", "tims", "portfolio", "contentforge", "devflow", "internova"]
-        found_project = None
+    # 9. Open Project or Desktop Application (100% Offline, ZERO API Key required!)
+    if any(k in msg for k in ["open", "launch", "start"]):
+        # A. Check for Project in specific IDE
+        projects_check = [
+            "technokart", "shiva-ai", "kisansathi", "tims", "portfolio",
+            "contentforge", "devflow", "internova", "iiit-delhi"
+        ]
+        target_project = None
         for p in projects_check:
             if p in msg:
-                found_project = p
+                target_project = p
                 break
-        if found_project:
-            return (True, open_project_in_ide(found_project, ide))
 
-    # 10. Close Application
-    # e.g. "close vscode", "close chrome", "close antigravity"
-    if "close" in msg:
-        for app in ["vscode", "vs code", "chrome", "antigravity", "spotify", "notepad", "calculator"]:
+        if target_project:
+            ide = "antigravity" if "antigravity" in msg else "vscode"
+            return (True, open_project_in_ide(target_project, ide))
+
+        # B. Standalone IDEs or Apps
+        if "antigravity" in msg:
+            return (True, open_application("antigravity"))
+        elif "vscode" in msg or "vs code" in msg or "code" in msg:
+            return (True, open_application("vscode"))
+        elif "chrome" in msg or "browser" in msg:
+            return (True, open_application("chrome"))
+        elif "calculator" in msg or "calc" in msg:
+            return (True, open_application("calculator"))
+        elif "notepad" in msg:
+            return (True, open_application("notepad"))
+        elif "terminal" in msg or "powershell" in msg or "cmd" in msg:
+            return (True, open_application("terminal"))
+        elif "explorer" in msg or "files" in msg:
+            return (True, open_application("explorer"))
+        elif "settings" in msg:
+            return (True, open_application("settings"))
+        elif "spotify" in msg:
+            return (True, open_spotify())
+
+    # 10. Close Application (100% Offline, ZERO API Key required!)
+    if any(k in msg for k in ["close", "exit", "terminate", "kill"]):
+        for app in [
+            "vscode", "vs code", "code", "antigravity", "antigravity ide",
+            "chrome", "spotify", "notepad", "calculator", "terminal"
+        ]:
             if app in msg:
                 return (True, close_application(app))
 
