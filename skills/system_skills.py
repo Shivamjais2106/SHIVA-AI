@@ -79,7 +79,7 @@ def open_application(app_name: str) -> str:
         vscode_cmd = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
         executable = vscode_cmd if os.path.exists(vscode_cmd) else "code"
         try:
-            subprocess.Popen([executable, "-n"], env=get_clean_env(), shell=True)
+            subprocess.Popen(f'"{executable}" -n', env=get_clean_env(), shell=True)
             return "Launched VS Code successfully, Boss! 🚀"
         except Exception as e:
             return f"Failed to launch VS Code: {e}"

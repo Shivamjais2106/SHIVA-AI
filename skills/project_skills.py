@@ -92,10 +92,10 @@ def open_project_in_ide(project_name: str, ide: str = "vscode", same_window: boo
             clean_env = get_clean_env()
             executable = VSCODE_CMD if os.path.exists(VSCODE_CMD) else "code"
             if same_window:
-                subprocess.Popen([executable, "-a", str(target_path)], env=clean_env, shell=True)
+                subprocess.Popen(f'"{executable}" -a "{str(target_path)}"', env=clean_env, shell=True)
                 return f"Added '{target_path.name}' into your current VS Code workspace, Boss! 💻"
             else:
-                subprocess.Popen([executable, str(target_path)], env=clean_env, shell=True)
+                subprocess.Popen(f'"{executable}" "{str(target_path)}"', env=clean_env, shell=True)
                 return f"Opened '{target_path.name}' in VS Code, Boss! 💻"
 
     except Exception as e:
