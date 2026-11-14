@@ -16,6 +16,7 @@ load_dotenv(BASE_DIR / ".env")
 
 # Core Settings
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 ASSISTANT_NAME = os.getenv("ASSISTANT_NAME", "SHIVA")
 ASSISTANT_FULL_NAME = os.getenv(
     "ASSISTANT_FULL_NAME", "Synthetic High-Intelligence Virtual Assistant"

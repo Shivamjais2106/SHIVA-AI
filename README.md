@@ -2,20 +2,22 @@
 
 Personal AI Assistant built specifically for **Shivam Jaiswal** (Boss).
 
+## 🧠 Dual-Brain Architecture (100% Free & Infinite Quota)
+1. **Direct Action Engine (0 API Tokens)**:
+   - System controls, opening/closing apps, Git status/commit, media, battery, file inspection/editing run 100% offline and instantly.
+2. **Primary AI Brain**:
+   - Google Gemini 2.5 Flash with Multi-Key Pool & Auto-Rotation.
+3. **Secondary High-Speed AI Brain (Failover)**:
+   - **Groq AI (Llama / Qwen / GPT-OSS)** with 14,400 free requests/day.
+   - When Gemini hits rate limits, SHIVA switches to Groq in milliseconds!
+
+---
+
 ## 🚀 Completed Phases
 - ✅ **Phase 1: Brain & Personal Memory** (Gemini 2.5 Flash, Personal Profile from Resume, Multi-Key Pool)
 - ✅ **Phase 2: Action Skills & Automation** (VS Code, Antigravity IDE, Spotify, Chrome, File Inspection/Editing, Safe Deletion Guard)
 - ✅ **Phase 3: The Voice Engine** (Neural TTS Voice, Microphone Listening, Hands-free Voice Mode)
-
----
-
-## 🎙️ Phase 3: The Voice Engine Capabilities
-- **Neural Speech (TTS)**: Realistic British neural voice (`en-GB-RyanNeural`) speaking responses aloud.
-- **Microphone Recognition (STT)**: Hands-free listening using Google Speech Recognition (`en-IN` accent support).
-- **Dual Mode (Voice & Text)**:
-  - Type `mic` or `voice mode` to switch to continuous microphone conversation.
-  - Type `voice on` / `voice off` to toggle spoken replies.
-- **Background Audio Player**: Non-blocking audio playback using Pygame.
+- ✅ **Dual-Brain Groq Auto-Failover** (Groq AI integration for zero-downtime reasoning)
 
 ---
 

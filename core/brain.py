@@ -1,9 +1,10 @@
 import os
+import requests
 from typing import Optional, List
 from google import genai
 from google.genai import types
 
-from config import GEMINI_API_KEY, USER_TITLE, ASSISTANT_NAME
+from config import GEMINI_API_KEY, GROQ_API_KEY, USER_TITLE, ASSISTANT_NAME
 from memory.memory_manager import MemoryManager
 from skills.registry import ALL_TOOLS
 from core.direct_actions import try_handle_direct_action
@@ -12,18 +13,26 @@ from core.direct_actions import try_handle_direct_action
 class ShivaBrain:
     """
     Core LLM Reasoning & Tool Execution Engine for S.H.I.V.A.
-    Includes Multi-Key Pool & Automatic Failover on 429 Quota Exhaustion.
+    Features:
+    1. Direct Instant Desktop Actions (100% offline, 0 API tokens)
+    2. Primary Brain: Gemini 2.5 Flash with Multi-Key Auto-Rotation
+    3. Ultra-Fast Secondary Brain: Groq AI Fallback (14,400 free requests/day)
     """
 
     def __init__(self, memory: Optional[MemoryManager] = None):
         self.memory = memory or MemoryManager()
-        raw_keys = GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
-        # Parse comma-separated keys for failover pool
-        self.api_keys: List[str] = [k.strip() for k in raw_keys.split(",") if k.strip()]
+        
+        # Gemini API Key pool
+        raw_gemini_keys = GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
+        self.api_keys: List[str] = [k.strip() for k in raw_gemini_keys.split(",") if k.strip()]
         self.current_key_idx: int = 0
         self.client = None
         self.model_name = "gemini-2.5-flash"
         self.chat = None
+
+        # Groq API Key pool for instant failover
+        raw_groq_keys = GROQ_API_KEY or os.getenv("GROQ_API_KEY", "")
+        self.groq_keys: List[str] = [k.strip() for k in raw_groq_keys.split(",") if k.strip()]
 
         self._connect_client()
 
@@ -33,7 +42,7 @@ class ShivaBrain:
         return None
 
     def _connect_client(self) -> bool:
-        """Connects client with current active key."""
+        """Connects client with current active Gemini key."""
         active_key = self._get_active_key()
         if not active_key:
             return False
@@ -46,17 +55,21 @@ class ShivaBrain:
             self._initialize_chat()
             return True
         except Exception as e:
-            print(f"[Warning] Failed to initialize Gemini Client with key index {self.current_key_idx}: {e}")
+            print(f"[Warning] Failed to initialize Gemini Client with key slot {self.current_key_idx + 1}: {e}")
             return False
 
     def _rotate_key(self) -> bool:
-        """Rotates to next available API key in the pool upon rate limits."""
+        """Rotates to next available Gemini API key in the pool upon rate limits."""
         if len(self.api_keys) <= 1:
             return False
 
         old_idx = self.current_key_idx
         self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)
-        print(f"[SHIVA Failover] Switching API Key from pool slot {old_idx + 1} to {self.current_key_idx + 1}...")
+        # Avoid infinite looping if wrapped around
+        if self.current_key_idx == 0:
+            return False
+
+        print(f"[SHIVA Failover] Switching Gemini API Key from slot {old_idx + 1} to {self.current_key_idx + 1}...")
         return self._connect_client()
 
     def _initialize_chat(self):
@@ -73,7 +86,8 @@ ACTION SKILL GUIDELINES:
 - When Boss asks to open a project or folder, call `open_project_in_ide` with the project name and target IDE ('vscode' or 'antigravity').
 - When Boss asks to open any desktop app (Chrome, Spotify, Terminal, Notepad, Calculator, WhatsApp, etc.), call `open_application` or `open_spotify`.
 - When Boss asks to close an application or IDE (e.g., 'close vscode', 'close chrome', 'close antigravity', 'close spotify'), call `close_application`.
-- When Boss asks to run terminal commands (e.g. git add, git commit -m, npm run dev, pip install, python scripts, dir), call `execute_terminal_command`.
+- When Boss asks to check git status of any project, call `get_git_status`.
+- When Boss asks to run terminal commands (e.g. git add, git commit -m, npm run dev, pip install, python scripts, dir), call `execute_terminal_command` or `git_add_and_commit`.
 - STRICT SECURITY RULE ON GIT: You can run `git add .` or `git commit -m "..."`, BUT `git push` is PERMANENTLY BLOCKED. If asked to push, politely refuse and state that Boss will push manually.
 - When Boss asks to play music, skip songs, or adjust volume, call `control_media` or `control_volume`.
 - When Boss asks to search or open links, use `open_in_chrome` or `search_google`.
@@ -94,57 +108,88 @@ ACTION SKILL GUIDELINES:
         )
 
     def has_api_key(self) -> bool:
-        return bool(self.api_keys and self.client)
+        return bool(self.api_keys and self.client) or bool(self.groq_keys)
+
+    def call_groq_fallback(self, user_message: str) -> Optional[str]:
+        """High-speed failover fallback using Groq free tier API (14,400 requests/day)."""
+        if not self.groq_keys:
+            return None
+
+        system_prompt = self.memory.get_system_prompt()
+        models = ["openai/gpt-oss-120b", "qwen/qwen3.8-27b"]
+
+        for key in self.groq_keys:
+            headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
+            for model in models:
+                payload = {
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_message},
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 1024,
+                }
+                try:
+                    res = requests.post(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        headers=headers,
+                        json=payload,
+                        timeout=10,
+                    )
+                    if res.status_code == 200:
+                        data = res.json()
+                        return data["choices"][0]["message"]["content"]
+                except Exception:
+                    continue
+        return None
 
     def generate_response(self, user_message: str) -> str:
         """Sends message to direct action engine or multi-turn chat with key failover."""
-        # 1. Try Instant Direct Action Execution (0 API tokens consumed)
+        # 1. Try Instant Direct Action Execution (0 API tokens consumed, 100% offline)
         handled, direct_response = try_handle_direct_action(user_message)
         if handled and direct_response:
             return direct_response
 
-        # 2. If not a direct desktop action, pass to Gemini Brain with multi-key pool
-        if not self.has_api_key():
-            return (
-                f"Hello {USER_TITLE}! {ASSISTANT_NAME} is initialized, but no active Gemini API key "
-                "was found. Please check your .env file."
-            )
+        # 2. Try Gemini Brain with auto-failover pool
+        if self.client:
+            if not self.chat:
+                self._initialize_chat()
 
-        if not self.chat:
-            self._initialize_chat()
+            max_attempts = max(1, len(self.api_keys))
+            attempts = 0
 
-        max_attempts = max(1, len(self.api_keys))
-        attempts = 0
-
-        while attempts < max_attempts:
-            attempts += 1
-            try:
-                response = self.chat.send_message(user_message)
-                return response.text or f"Action executed, {USER_TITLE}."
-            except Exception as e:
-                err_str = str(e)
-                # Check for 429 quota exhaustion or rate limits
-                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                    rotated = self._rotate_key()
-                    if rotated:
-                        continue  # Retry with the rotated key!
-                    else:
-                        return (
-                            f"Boss, your free Gemini API key quota has reached its daily limit. "
-                            f"You can add a second free key to .env (comma-separated: GEMINI_API_KEY=key1,key2) "
-                            f"to get double quota!"
-                        )
-
-                # If session failed, try re-initializing chat once
+            while attempts < max_attempts:
+                attempts += 1
                 try:
-                    self._initialize_chat()
                     response = self.chat.send_message(user_message)
-                    return response.text or f"Understood, {USER_TITLE}."
-                except Exception as err:
-                    return f"[SHIVA Brain Error]: {e} | Retry failed: {err}"
+                    return response.text or f"Action executed, {USER_TITLE}."
+                except Exception as e:
+                    err_str = str(e)
+                    # Check for 429 quota exhaustion or rate limits
+                    if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                        rotated = self._rotate_key()
+                        if rotated:
+                            continue
+                        else:
+                            break  # Drop through to Groq fallback!
+
+                    # Session error fallback
+                    try:
+                        self._initialize_chat()
+                        response = self.chat.send_message(user_message)
+                        return response.text or f"Understood, {USER_TITLE}."
+                    except Exception:
+                        break
+
+        # 3. Automatic Groq Fallback when Gemini is on rate limit
+        print("[SHIVA Failover] Gemini quota reached. Auto-switching to high-speed Groq Brain...")
+        groq_resp = self.call_groq_fallback(user_message)
+        if groq_resp:
+            return groq_resp
 
         return (
             f"Boss, your free Gemini API quota is currently refreshing on Google AI Studio. "
             f"All your desktop automation (opening apps, Git, Spotify, files, PC health) is working 100% offline! "
-            f"To awaken the AI reasoning immediately, you can generate 1 new free key at aistudio.google.com and paste it in .env."
+            f"Please check your API keys in .env."
         )
