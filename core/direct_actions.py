@@ -142,4 +142,39 @@ def try_handle_direct_action(user_input: str) -> Tuple[bool, Optional[str]]:
         elif "linkedin" in msg:
             return (True, open_social_profile("linkedin"))
 
+    # 12. Personal Profile / Resume Knowledge Base (100% Offline & Instant)
+    if any(k in msg for k in ["contact", "phone", "mobile", "number"]):
+        return (True, "Boss, your registered contact number is 7869037289.")
+
+    if any(k in msg for k in ["email", "mail id"]):
+        return (True, "Boss, your email address is shivamjais2106@gmail.com.")
+
+    if any(k in msg for k in ["who am i", "my name", "mera naam", "about me"]):
+        return (
+            True,
+            "You are Shivam Jaiswal, Boss! Full-Stack MERN Developer and AI Engineer currently interning at Fakhri IT Services."
+        )
+
+    if any(k in msg for k in ["college", "university", "education", "degree", "study"]):
+        return (
+            True,
+            "Boss, you are pursuing B.Tech in Computer Science & Information Technology at Sagar Institute of Research and Technology (SIRT), Bhopal (2023–2027)."
+        )
+
+    if any(k in msg for k in ["company", "internship", "job", "fakhri", "current work"]):
+        return (
+            True,
+            "Boss, you are working as a MERN Stack Developer Intern at Fakhri IT Services, handling JamaatCloud, Fakhri Workspace chat audit, and Amazon Shipping API v2."
+        )
+
+    if any(k in msg for k in ["my skills", "tech stack", "languages"]):
+        return (
+            True,
+            "Boss, your core stack includes React.js, Next.js, Node.js, Express, MongoDB, Python, FastAPI, Docker, and Gemini AI."
+        )
+
+    if any(k in msg for k in ["city", "location", "address", "where do i live"]):
+        return (True, "Boss, you are based in Bhopal, Madhya Pradesh.")
+
     return (False, None)
+
