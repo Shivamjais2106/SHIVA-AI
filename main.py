@@ -1,18 +1,20 @@
 import sys
+import threading
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from rich.prompt import Prompt
 from rich.table import Table
 
-from config import ASSISTANT_NAME, ASSISTANT_FULL_NAME, USER_TITLE, USER_REAL_NAME
+from config import ASSISTANT_NAME, ASSISTANT_FULL_NAME, USER_TITLE, USER_REAL_NAME, SPEECH_ENABLED, VOICE_NAME
 from memory.memory_manager import MemoryManager
 from core.brain import ShivaBrain
+from core.voice import ShivaVoice
 
 console = Console()
 
 
-def print_banner(brain: ShivaBrain, memory: MemoryManager):
+def print_banner(brain: ShivaBrain, voice: ShivaVoice, voice_active: bool):
     banner_text = f"""
   ███████╗██╗  ██╗██╗██╗   ██╗ █████╗        █████╗ ██╗
   ██╔════╝██║  ██║██║██║   ██║██╔══██╗      ██╔══██╗██║
@@ -30,49 +32,108 @@ def print_banner(brain: ShivaBrain, memory: MemoryManager):
     status_table.add_row("Operator", f"{USER_REAL_NAME} (Addressing as: [bold cyan]{USER_TITLE}[/bold cyan])")
     status_table.add_row("Memory Status", f"[bold green]Active[/bold green] (Resume & Workspaces Loaded)")
     
-    api_status = "[bold green]Online (Gemini 2.5 Flash with Auto-Failover)[/bold green]" if brain.has_api_key() else "[bold red]API Key Missing (Check .env)[/bold red]"
+    api_status = "[bold green]Online (Gemini Flash + Direct Offline Engine)[/bold green]"
     status_table.add_row("Brain Engine", api_status)
     status_table.add_row(
-        "Action Skills",
-        "[bold green]Full Desktop Access[/bold green] (VS Code, Antigravity, Terminal, Spotify, Chrome, 2x Safe Delete)"
+        "Voice Engine",
+        f"[bold green]Enabled ({VOICE_NAME})[/bold green]" if voice_active else "[bold red]Muted (Type 'voice on')[/bold red]"
     )
-    status_table.add_row("Security Gate", "[bold yellow]Git Push Banned | 2-Step File Delete Guard[/bold yellow]")
-    status_table.add_row("Commands", "[cyan]'exit'[/cyan] to quit | [cyan]'profile'[/cyan] for memory | [cyan]'help'[/cyan] for skills")
+    status_table.add_row("Safety Policy", "[bold yellow]Git Push Banned | 2x Confirm Delete Guard[/bold yellow]")
+    status_table.add_row(
+        "Modes & Controls",
+        "[cyan]'mic'[/cyan] for Voice Mode | [cyan]'voice on/off'[/cyan] | [cyan]'help'[/cyan] | [cyan]'exit'[/cyan]"
+    )
 
-    console.print(Panel(status_table, title="[bold cyan]SYSTEM DIAGNOSTICS & PERMISSIONS[/bold cyan]", border_style="cyan"))
+    console.print(Panel(status_table, title="[bold cyan]SYSTEM DIAGNOSTICS & VOICE ENGINE[/bold cyan]", border_style="cyan"))
     console.print()
 
 
 def show_help():
-    table = Table(title="S.H.I.V.A. - Full Permission & Action Catalog", style="cyan")
-    table.add_column("Module", style="yellow")
-    table.add_column("Capability & Examples", style="white")
+    table = Table(title="S.H.I.V.A. - Full Voice & Action Catalog", style="cyan")
+    table.add_column("Command / Trigger", style="yellow")
+    table.add_column("Action / Capability", style="white")
 
-    table.add_row("IDEs & Projects", "Open in VS Code or Antigravity ('open TechnoKart in Antigravity')")
-    table.add_row("App Management", "Open/Close ANY app ('launch Spotify', 'close VS Code', 'open Calculator')")
-    table.add_row("Terminal & Shell", "Run dev commands ('git status', 'git add .', 'git commit -m \"...\"', 'npm run dev')")
-    table.add_row("Git Security", "⛔ 'git push' is strictly BLOCKED. Boss pushes to remote manually.")
-    table.add_row("Media & Music", "Control Spotify ('play/pause', 'next song', 'volume up/down', 'mute')")
-    table.add_row("Chrome Web", "Google search, open websites, open GitHub / LeetCode profiles")
-    table.add_row("File Operations", "List files, read source code, find & replace specific text in files")
-    table.add_row("Deletion Guard", "⚠️ Strict 2-step verification required before deleting any file")
-    table.add_row("System Health", "Live Battery %, CPU load, RAM usage metrics")
+    table.add_row("mic / voice mode", "Activates live Microphone listening (talk to Shiva hands-free)")
+    table.add_row("voice on / voice off", "Toggle whether Shiva speaks replies aloud")
+    table.add_row("Hey Shiva, open TechnoKart in Antigravity", "Opens project in Antigravity IDE")
+    table.add_row("Hey Shiva, open TechnoKart in VS Code", "Opens project in VS Code")
+    table.add_row("Hey Shiva, check git status", "Checks branch, staged, modified, and untracked files (0 tokens)")
+    table.add_row("Hey Shiva, commit files with message 'xyz'", "Runs git add . and git commit -m 'xyz' (0 tokens)")
+    table.add_row("Hey Shiva, play / pause / next song", "Controls Spotify / Windows media playback")
+    table.add_row("Hey Shiva, volume up / down / mute", "Adjusts master system audio")
+    table.add_row("Hey Shiva, open Spotify / Chrome / Calc", "Opens any desktop application")
+    table.add_row("Hey Shiva, close VS Code / Chrome", "Terminates application process on command")
+    table.add_row("Hey Shiva, check battery and ram", "Live battery %, plugged status, CPU & RAM")
+    table.add_row("profile", "Inspect Shiva's loaded memory about Boss")
     console.print(table)
     console.print()
+
+
+def speak_in_background(voice: ShivaVoice, text: str):
+    """Speaks text in a separate thread so console output stays snappy."""
+    threading.Thread(target=voice.speak, args=(text,), daemon=True).start()
+
+
+def run_voice_loop(brain: ShivaBrain, voice: ShivaVoice, memory: MemoryManager):
+    """Continuous listening voice loop."""
+    console.print(Panel(
+        "[bold green]🎙️ VOICE MODE ACTIVATED[/bold green]\n"
+        "Shiva is listening to your microphone...\n"
+        "Speak your command, or say [bold yellow]'exit voice'[/bold yellow] / press [bold yellow]Ctrl+C[/bold yellow] to return to text.",
+        border_style="green"
+    ))
+    voice.speak(f"Voice mode active. I am listening, {USER_TITLE}.")
+
+    while True:
+        try:
+            console.print("[dim cyan]Listening...[/dim cyan]")
+            heard_text = voice.listen(timeout=6, phrase_time_limit=10)
+
+            if not heard_text:
+                continue
+
+            console.print(f"[bold yellow]🗣️ You:[/bold yellow] {heard_text}")
+
+            if any(k in heard_text.lower() for k in ["exit voice", "stop voice", "text mode", "switch to text"]):
+                console.print(f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Switching back to text mode, {USER_TITLE}.\n")
+                voice.speak("Switching to text mode, Boss.")
+                break
+
+            if heard_text.lower() in ["exit", "quit", "shutdown"]:
+                console.print(f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Shutting down, {USER_TITLE}!\n")
+                voice.speak(f"Standing down, {USER_TITLE}.")
+                sys.exit(0)
+
+            with console.status(f"[bold cyan]{ASSISTANT_NAME} is processing...[/bold cyan]", spinner="dots"):
+                response = brain.generate_response(heard_text)
+
+            console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] {response}\n")
+            voice.speak(response)
+
+        except KeyboardInterrupt:
+            console.print("\n[yellow]Voice mode paused. Returning to text mode.[/yellow]\n")
+            break
+        except Exception as e:
+            console.print(f"[red]Voice Error:[/red] {e}")
 
 
 def main():
     memory = MemoryManager()
     brain = ShivaBrain(memory=memory)
+    voice = ShivaVoice()
+    voice_active = SPEECH_ENABLED
 
-    print_banner(brain, memory)
+    print_banner(brain, voice, voice_active)
 
     greeting = (
-        f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] All desktop permissions active under your strict command. "
+        f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Systems online, voice engine armed. "
         f"Awaiting instructions, [bold yellow]{USER_TITLE}[/bold yellow]!"
     )
     console.print(greeting)
     console.print()
+
+    if voice_active:
+        speak_in_background(voice, f"Systems online. Standing by for your command, {USER_TITLE}.")
 
     while True:
         try:
@@ -81,8 +142,27 @@ def main():
             if not user_input:
                 continue
 
+            # Switch to continuous voice mode
+            if user_input.lower() in ["mic", "voice", "voice mode", "listen"]:
+                run_voice_loop(brain, voice, memory)
+                continue
+
+            # Toggle speech output
+            if user_input.lower() in ["voice on", "enable voice"]:
+                voice_active = True
+                console.print(f"[bold green]Voice output enabled.[/bold green] {ASSISTANT_NAME} will now speak replies aloud.\n")
+                voice.speak(f"Voice output enabled, {USER_TITLE}.")
+                continue
+
+            if user_input.lower() in ["voice off", "mute voice", "disable voice"]:
+                voice_active = False
+                console.print(f"[bold yellow]Voice output muted.[/bold yellow] {ASSISTANT_NAME} will now reply in text only.\n")
+                continue
+
             if user_input.lower() in ["exit", "quit", "bye", "shutdown"]:
-                console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Standing down. Have a great day, {USER_TITLE}!\n")
+                console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Standing down. Systems on standby, {USER_TITLE}!\n")
+                if voice_active:
+                    voice.speak(f"Standing down. Have a productive day, {USER_TITLE}!")
                 break
 
             if user_input.lower() == "help":
@@ -105,20 +185,16 @@ def main():
                 console.print(info_table)
                 continue
 
-            if user_input.lower().startswith("remember "):
-                note = user_input[9:].strip()
-                if note:
-                    memory.add_note(note)
-                    console.print(f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Noted, {USER_TITLE}. Stored in long-term memory: '{note}'\n")
-                continue
-
-            with console.status(f"[bold cyan]{ASSISTANT_NAME} is executing...[/bold cyan]", spinner="dots"):
+            with console.status(f"[bold cyan]{ASSISTANT_NAME} is processing...[/bold cyan]", spinner="dots"):
                 response = brain.generate_response(user_input)
 
             console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] {response}\n")
 
+            if voice_active:
+                speak_in_background(voice, response)
+
         except KeyboardInterrupt:
-            console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Interrupted. Standing by, {USER_TITLE}!\n")
+            console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Interrupted. Goodbye, {USER_TITLE}!\n")
             break
         except Exception as e:
             console.print(f"\n[bold red]Error:[/bold red] {e}\n")
