@@ -1,0 +1,86 @@
+import os
+import subprocess
+import webbrowser
+import psutil
+from typing import Dict, Any
+
+CHROME_PATH = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+if not os.path.exists(CHROME_PATH):
+    CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+
+def get_system_health() -> Dict[str, Any]:
+    """Returns CPU, RAM, and Battery statistics of Boss's laptop."""
+    cpu_percent = psutil.cpu_percent(interval=0.5)
+    ram = psutil.virtual_memory()
+    battery = psutil.sensors_battery()
+
+    battery_info = "No battery detected (Desktop/AC)"
+    if battery:
+        plugged = "Plugged In ⚡" if battery.power_plugged else "On Battery 🔋"
+        battery_info = f"{battery.percent}% ({plugged})"
+
+    return {
+        "status": "success",
+        "cpu_usage": f"{cpu_percent}%",
+        "ram_usage": f"{ram.percent}% ({round(ram.used / (1024**3), 2)} GB used of {round(ram.total / (1024**3), 2)} GB)",
+        "battery": battery_info,
+    }
+
+
+def open_in_chrome(url: str = "https://www.google.com") -> str:
+    """Opens a specific URL or webpage in Google Chrome."""
+    try:
+        if os.path.exists(CHROME_PATH):
+            subprocess.Popen([CHROME_PATH, url])
+            return f"Opened '{url}' in Google Chrome, Boss."
+        else:
+            webbrowser.open(url)
+            return f"Opened '{url}' in default browser, Boss."
+    except Exception as e:
+        return f"Failed to open Chrome: {e}"
+
+
+def search_google(query: str) -> str:
+    """Searches Google in Chrome for Boss's query."""
+    encoded_query = query.replace(" ", "+")
+    url = f"https://www.google.com/search?q={encoded_query}"
+    return open_in_chrome(url)
+
+
+def open_social_profile(platform: str) -> str:
+    """Opens Boss's GitHub, LeetCode, or LinkedIn profile in Chrome."""
+    platform_lower = platform.lower()
+    if "github" in platform_lower:
+        return open_in_chrome("https://github.com/Shivamjais2106")
+    elif "leetcode" in platform_lower:
+        return open_in_chrome("https://leetcode.com/Shivamjais2303")
+    elif "linkedin" in platform_lower:
+        return open_in_chrome("https://linkedin.com/in/shivam-jaiswal-37a951369")
+    else:
+        return f"Boss, unknown profile platform '{platform}'. Options are GitHub, LeetCode, or LinkedIn."
+
+
+def open_application(app_name: str) -> str:
+    """Launches desktop applications on Windows (e.g. calculator, notepad, terminal, taskmgr)."""
+    app = app_name.lower().strip()
+    cmd_map = {
+        "calculator": "calc.exe",
+        "calc": "calc.exe",
+        "notepad": "notepad.exe",
+        "terminal": "wt.exe",
+        "powershell": "powershell.exe",
+        "cmd": "cmd.exe",
+        "task manager": "taskmgr.exe",
+        "taskmgr": "taskmgr.exe",
+        "chrome": CHROME_PATH,
+        "explorer": "explorer.exe",
+    }
+
+    executable = cmd_map.get(app, app)
+    try:
+        subprocess.Popen(executable, shell=True)
+        return f"Launched {app_name} successfully, Boss."
+    except Exception as e:
+        return f"Failed to launch {app_name}: {e}"
+

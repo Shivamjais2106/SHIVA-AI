@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment & Keys
+.env
+
+# Audio & Cache
+cache/
+logs/
+
+# OS specific
+Thumbs.db
+.DS_Store
+

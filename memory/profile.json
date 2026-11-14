@@ -1,0 +1,64 @@
+{
+  "user": {
+    "name": "Shivam Jaiswal",
+    "call_name": "Boss",
+    "location": "Bhopal, Madhya Pradesh",
+    "email": "shivamjais2106@gmail.com",
+    "phone": "7869037289",
+    "social": {
+      "github": "https://github.com/Shivamjais2106",
+      "linkedin": "https://linkedin.com/in/shivam-jaiswal-37a951369",
+      "leetcode": "https://leetcode.com/Shivamjais2303"
+    }
+  },
+  "education": {
+    "degree": "Bachelor of Technology — Computer Science & Information Technology (2023–2027)",
+    "college": "Sagar Institute of Research and Technology (SIRT), Bhopal",
+    "cpi": "6.51 / 10.00",
+    "school": "Vidya Sagar Higher Secondary School, Bhopal"
+  },
+  "career": {
+    "current_role": "MERN Stack Developer Intern at Fakhri IT Services (India) Pvt. Ltd. (Sept 2026 – Present)",
+    "current_projects": [
+      "JamaatCloud: 12 Umoor modules, Next.js, Express.js, MongoDB, JWT/RBAC",
+      "Fakhri Workspace: Client chat, OWASP Top 10:2025 security audit",
+      "FlexSell Wholesale: Amazon Shipping API v2 integration"
+    ],
+    "previous_role": "MERN Full Stack Developer Intern at RRID Tech Pvt. Ltd. (Mar 2026 – Sept 2026)",
+    "previous_projects": [
+      "Internship Management System: React 19, Vite, Tailwind CSS, Node/Express/MongoDB, RBAC"
+    ]
+  },
+  "key_projects": [
+    {
+      "name": "TechnoKart",
+      "stack": "Next.js, Node.js, Express.js, MongoDB",
+      "description": "Student marketplace with rental & inventory management, automated expiry notifications."
+    },
+    {
+      "name": "KisanSathi",
+      "stack": "React.js, TypeScript, Python, Flask, XGBoost, PyTorch, Gemini 2.5 Flash, WeatherAPI",
+      "description": "AI-powered smart farm decision support system with crop recommendation, disease detection, live mandi prices."
+    },
+    {
+      "name": "TIMS (Thermal Intelligence & Monitoring System)",
+      "stack": "Next.js, TypeScript, Node.js, Express, Python, FastAPI, XGBoost, PostgreSQL, PostGIS, Docker",
+      "description": "Real-time thermal anomaly monitoring platform for Bhopal using NASA FIRMS satellite data."
+    }
+  ],
+  "skills": {
+    "languages": ["JavaScript (ES6+)", "Java", "Python", "TypeScript"],
+    "frontend": ["React.js", "Next.js", "Tailwind CSS", "HTML5", "CSS3"],
+    "backend": ["Node.js", "Express.js", "FastAPI", "Flask", "RESTful APIs", "JWT/RBAC"],
+    "databases": ["MongoDB", "PostgreSQL", "Mongoose"],
+    "ai_tools": ["Gemini API", "Prompt Engineering", "Google Antigravity"],
+    "devops": ["Docker", "Git", "GitHub", "Postman", "Vercel", "Render", "VS Code"]
+  },
+  "achievements": [
+    "3rd Position — Vibe Coding Competition, BMIET Sonipat Hackathon (2025, 50+ teams)",
+    "Top 10 Teams — Hack Hatch 2025, E-Cell, IIIT Delhi Startup Hackathon (100+ teams)",
+    "Team Lead — HackInMotion (RICR) Hackathon"
+  ],
+  "custom_notes": []
+}
+
