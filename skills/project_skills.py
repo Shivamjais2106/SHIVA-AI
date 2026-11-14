@@ -4,8 +4,17 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 PROJECTS_DIR = Path("D:/Projects")
-VSCODE_PATH = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+VSCODE_CMD = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
 ANTIGRAVITY_PATH = r"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"
+
+
+def get_clean_env() -> dict:
+    """Removes Antigravity IDE and VS Code IPC hooks so Microsoft VS Code can launch independently."""
+    env = os.environ.copy()
+    for k in list(env.keys()):
+        if any(prefix in k for prefix in ["VSCODE", "ELECTRON", "ANTIGRAVITY"]):
+            del env[k]
+    return env
 
 
 def list_projects() -> Dict[str, Any]:
@@ -48,7 +57,7 @@ def find_best_project_match(query: str) -> Optional[Path]:
         if f_clean in clean_query or clean_query in f_clean:
             return f
 
-    # 3. Word-level match (e.g. 'shivam jaiswal' matches 'Shivam-Jaiswal Portfolio')
+    # 3. Word-level match
     query_words = clean_query.split()
     for f in folders_sorted:
         f_clean = f.name.lower().replace("-", " ").replace("_", " ")
@@ -79,15 +88,14 @@ def open_project_in_ide(project_name: str, ide: str = "vscode", same_window: boo
             else:
                 return f"Antigravity IDE executable not found at {ANTIGRAVITY_PATH}."
         else:
-            # VS Code (bring to foreground using start)
-            executable = VSCODE_PATH if os.path.exists(VSCODE_PATH) else "code"
+            # VS Code with cleaned environment (strips Antigravity IPC hooks)
+            clean_env = get_clean_env()
+            executable = VSCODE_CMD if os.path.exists(VSCODE_CMD) else "code"
             if same_window:
-                cmd = f'start "" "{executable}" -a "{str(target_path)}"'
-                subprocess.Popen(cmd, shell=True)
+                subprocess.Popen([executable, "-a", str(target_path)], env=clean_env, shell=True)
                 return f"Added '{target_path.name}' into your current VS Code workspace, Boss! 💻"
             else:
-                cmd = f'start "" "{executable}" "{str(target_path)}"'
-                subprocess.Popen(cmd, shell=True)
+                subprocess.Popen([executable, str(target_path)], env=clean_env, shell=True)
                 return f"Opened '{target_path.name}' in VS Code, Boss! 💻"
 
     except Exception as e:

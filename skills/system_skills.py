@@ -61,9 +61,29 @@ def open_social_profile(platform: str) -> str:
         return f"Boss, unknown profile platform '{platform}'. Options are GitHub, LeetCode, or LinkedIn."
 
 
+def get_clean_env() -> dict:
+    """Removes Antigravity IDE and VS Code IPC hooks so Microsoft VS Code can launch independently."""
+    env = os.environ.copy()
+    for k in list(env.keys()):
+        if any(prefix in k for prefix in ["VSCODE", "ELECTRON", "ANTIGRAVITY"]):
+            del env[k]
+    return env
+
+
 def open_application(app_name: str) -> str:
     """Launches any desktop application or system tool on Windows."""
     app = app_name.lower().strip()
+    
+    # Special handling for VS Code to clear Antigravity IDE hooks
+    if app in ["vscode", "vs code", "code"]:
+        vscode_cmd = r"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"
+        executable = vscode_cmd if os.path.exists(vscode_cmd) else "code"
+        try:
+            subprocess.Popen([executable, "-n"], env=get_clean_env(), shell=True)
+            return "Launched VS Code successfully, Boss! 🚀"
+        except Exception as e:
+            return f"Failed to launch VS Code: {e}"
+
     cmd_map = {
         "calculator": "calc.exe",
         "calc": "calc.exe",
@@ -78,9 +98,6 @@ def open_application(app_name: str) -> str:
         "file explorer": "explorer.exe",
         "settings": "start ms-settings:",
         "spotify": "cmd /c start spotify:",
-        "vscode": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
-        "vs code": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
-        "code": r'start "" "C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\Code.exe" -n',
         "antigravity": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
         "antigravity ide": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
     }
