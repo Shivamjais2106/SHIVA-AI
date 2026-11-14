@@ -6,6 +6,7 @@ from google.genai import types
 from config import GEMINI_API_KEY, USER_TITLE, ASSISTANT_NAME
 from memory.memory_manager import MemoryManager
 from skills.registry import ALL_TOOLS
+from core.direct_actions import try_handle_direct_action
 
 
 class ShivaBrain:
@@ -96,7 +97,13 @@ ACTION SKILL GUIDELINES:
         return bool(self.api_keys and self.client)
 
     def generate_response(self, user_message: str) -> str:
-        """Sends message to the multi-turn chat with auto tool-calling and key failover."""
+        """Sends message to direct action engine or multi-turn chat with key failover."""
+        # 1. Try Instant Direct Action Execution (0 API tokens consumed)
+        handled, direct_response = try_handle_direct_action(user_message)
+        if handled and direct_response:
+            return direct_response
+
+        # 2. If not a direct desktop action, pass to Gemini Brain with multi-key pool
         if not self.has_api_key():
             return (
                 f"Hello {USER_TITLE}! {ASSISTANT_NAME} is initialized, but no active Gemini API key "

@@ -85,3 +85,26 @@ def execute_terminal_command(command: str, working_directory: Optional[str] = No
     except Exception as e:
         return {"status": "error", "message": f"Execution error: {e}"}
 
+
+
+def get_git_status(project_name: str = "SHIVA-AI") -> str:
+    """
+    Directly checks the git status (uncommitted, modified, untracked files) of any project folder in D:/Projects.
+    """
+    res = execute_terminal_command("git status", project_name)
+    if res.get("status") == "success":
+        return f"Git Status for '{project_name}':\n{res.get('output')}"
+    return f"Could not get git status for '{project_name}': {res.get('message', res.get('output'))}"
+
+
+def git_add_and_commit(commit_message: str, project_name: str = "SHIVA-AI") -> str:
+    """
+    Runs 'git add .' and 'git commit -m <commit_message>' on a project.
+    Remember: 'git push' is NOT allowed.
+    """
+    res_add = execute_terminal_command("git add .", project_name)
+    if res_add.get("status") != "success":
+        return f"Failed to git add: {res_add.get('output')}"
+
+    res_commit = execute_terminal_command(f'git commit -m "{commit_message}"', project_name)
+    return f"Git Commit Result for '{project_name}':\n{res_commit.get('output')}"
