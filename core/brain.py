@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, List
 from google import genai
 from google.genai import types
 
@@ -9,28 +9,57 @@ from skills.registry import ALL_TOOLS
 
 
 class ShivaBrain:
-    """Core LLM Reasoning & Tool Execution Engine for S.H.I.V.A."""
+    """
+    Core LLM Reasoning & Tool Execution Engine for S.H.I.V.A.
+    Includes Multi-Key Pool & Automatic Failover on 429 Quota Exhaustion.
+    """
 
     def __init__(self, memory: Optional[MemoryManager] = None):
         self.memory = memory or MemoryManager()
-        self.api_key = GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
+        raw_keys = GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", "")
+        # Parse comma-separated keys for failover pool
+        self.api_keys: List[str] = [k.strip() for k in raw_keys.split(",") if k.strip()]
+        self.current_key_idx: int = 0
         self.client = None
         self.model_name = "gemini-2.5-flash"
         self.chat = None
 
-        if self.api_key:
-            try:
-                self.client = genai.Client(
-                    api_key=self.api_key,
-                    http_options={"api_version": "v1beta"}
-                )
-                self._initialize_chat()
-            except Exception as e:
-                print(f"[Warning] Failed to initialize Gemini Client: {e}")
-                self.client = None
+        self._connect_client()
+
+    def _get_active_key(self) -> Optional[str]:
+        if 0 <= self.current_key_idx < len(self.api_keys):
+            return self.api_keys[self.current_key_idx]
+        return None
+
+    def _connect_client(self) -> bool:
+        """Connects client with current active key."""
+        active_key = self._get_active_key()
+        if not active_key:
+            return False
+
+        try:
+            self.client = genai.Client(
+                api_key=active_key,
+                http_options={"api_version": "v1beta"}
+            )
+            self._initialize_chat()
+            return True
+        except Exception as e:
+            print(f"[Warning] Failed to initialize Gemini Client with key index {self.current_key_idx}: {e}")
+            return False
+
+    def _rotate_key(self) -> bool:
+        """Rotates to next available API key in the pool upon rate limits."""
+        if len(self.api_keys) <= 1:
+            return False
+
+        old_idx = self.current_key_idx
+        self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)
+        print(f"[SHIVA Failover] Switching API Key from pool slot {old_idx + 1} to {self.current_key_idx + 1}...")
+        return self._connect_client()
 
     def _initialize_chat(self):
-        """Initializes a multi-turn chat session with tools enabled."""
+        """Initializes multi-turn chat session with action skills."""
         if not self.client:
             return
 
@@ -38,13 +67,18 @@ class ShivaBrain:
         system_instruction += """
 
 ACTION SKILL GUIDELINES:
-- You have access to real automation tools on Boss's Windows machine.
-- When Boss asks to open a project or folder, ask or check if they want VS Code or Antigravity IDE, then call `open_project_in_ide`.
-- When Boss asks to open websites or search, use `open_in_chrome` or `search_google`.
+- You have direct access to automation tools on Boss's Windows machine.
+- IMPORTANT: You only execute desktop actions when Boss explicitly commands or asks you to. Never trigger actions unprompted.
+- When Boss asks to open a project or folder, call `open_project_in_ide` with the project name and target IDE ('vscode' or 'antigravity').
+- When Boss asks to open any desktop app (Chrome, Spotify, Terminal, Notepad, Calculator, WhatsApp, etc.), call `open_application` or `open_spotify`.
+- When Boss asks to close an application or IDE (e.g., 'close vscode', 'close chrome', 'close antigravity', 'close spotify'), call `close_application`.
+- When Boss asks to run terminal commands (e.g. git add, git commit -m, npm run dev, pip install, python scripts, dir), call `execute_terminal_command`.
+- STRICT SECURITY RULE ON GIT: You can run `git add .` or `git commit -m "..."`, BUT `git push` is PERMANENTLY BLOCKED. If asked to push, politely refuse and state that Boss will push manually.
+- When Boss asks to play music, skip songs, or adjust volume, call `control_media` or `control_volume`.
+- When Boss asks to search or open links, use `open_in_chrome` or `search_google`.
 - When Boss asks about system health, call `get_system_health`.
-- When Boss asks to view, read, or edit files, use `list_files`, `read_file`, or `edit_file`.
-- CRITICAL RULE ON DELETION: Never execute a deletion without warning Boss. If asked to delete, call `safe_delete_path` which enforces 2-stage verification.
-- CRITICAL RULE ON GIT: Never run git commit or git push to remote. Boss will do that manually.
+- When Boss asks to inspect, read, or edit files inside projects, use `list_files`, `read_file`, or `edit_file`.
+- CRITICAL RULE ON DELETION: Never delete files/folders directly. Always use `safe_delete_path` which strictly enforces 2-stage verification.
 """
 
         config = types.GenerateContentConfig(
@@ -59,27 +93,47 @@ ACTION SKILL GUIDELINES:
         )
 
     def has_api_key(self) -> bool:
-        return bool(self.api_key and self.client)
+        return bool(self.api_keys and self.client)
 
     def generate_response(self, user_message: str) -> str:
-        """Sends message to the multi-turn chat with automatic tool calling."""
+        """Sends message to the multi-turn chat with auto tool-calling and key failover."""
         if not self.has_api_key():
             return (
-                f"Hello {USER_TITLE}! {ASSISTANT_NAME} is initialized, but your Gemini API key "
-                "is not configured yet. Please check .env file."
+                f"Hello {USER_TITLE}! {ASSISTANT_NAME} is initialized, but no active Gemini API key "
+                "was found. Please check your .env file."
             )
 
         if not self.chat:
             self._initialize_chat()
 
-        try:
-            response = self.chat.send_message(user_message)
-            return response.text or f"Action executed, {USER_TITLE}."
-        except Exception as e:
-            # If session expired or failed, try re-initializing chat once
+        max_attempts = max(1, len(self.api_keys))
+        attempts = 0
+
+        while attempts < max_attempts:
+            attempts += 1
             try:
-                self._initialize_chat()
                 response = self.chat.send_message(user_message)
-                return response.text or f"Understood, {USER_TITLE}."
-            except Exception as err:
-                return f"[SHIVA Brain Error]: {e} | Retry failed: {err}"
+                return response.text or f"Action executed, {USER_TITLE}."
+            except Exception as e:
+                err_str = str(e)
+                # Check for 429 quota exhaustion or rate limits
+                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                    rotated = self._rotate_key()
+                    if rotated:
+                        continue  # Retry with the rotated key!
+                    else:
+                        return (
+                            f"Boss, your free Gemini API key quota has reached its daily limit. "
+                            f"You can add a second free key to .env (comma-separated: GEMINI_API_KEY=key1,key2) "
+                            f"to get double quota!"
+                        )
+
+                # If session failed, try re-initializing chat once
+                try:
+                    self._initialize_chat()
+                    response = self.chat.send_message(user_message)
+                    return response.text or f"Understood, {USER_TITLE}."
+                except Exception as err:
+                    return f"[SHIVA Brain Error]: {e} | Retry failed: {err}"
+
+        return f"Boss, request could not be completed after trying all available API keys."

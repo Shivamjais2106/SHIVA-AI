@@ -28,31 +28,35 @@ def print_banner(brain: ShivaBrain, memory: MemoryManager):
     status_table.add_column("Value", style="bold white")
 
     status_table.add_row("Operator", f"{USER_REAL_NAME} (Addressing as: [bold cyan]{USER_TITLE}[/bold cyan])")
-    status_table.add_row("Memory Status", f"[bold green]Active[/bold green] (Resume & Projects Loaded)")
+    status_table.add_row("Memory Status", f"[bold green]Active[/bold green] (Resume & Workspaces Loaded)")
     
-    api_status = "[bold green]Online (Gemini 2.5 Flash)[/bold green]" if brain.has_api_key() else "[bold red]API Key Missing (Check .env)[/bold red]"
+    api_status = "[bold green]Online (Gemini 2.5 Flash with Auto-Failover)[/bold green]" if brain.has_api_key() else "[bold red]API Key Missing (Check .env)[/bold red]"
     status_table.add_row("Brain Engine", api_status)
-    status_table.add_row("Action Skills", "[bold green]Active[/bold green] (VS Code, Antigravity, Chrome, Files, 2x Safe Delete)")
+    status_table.add_row(
+        "Action Skills",
+        "[bold green]Full Desktop Access[/bold green] (VS Code, Antigravity, Terminal, Spotify, Chrome, 2x Safe Delete)"
+    )
+    status_table.add_row("Security Gate", "[bold yellow]Git Push Banned | 2-Step File Delete Guard[/bold yellow]")
     status_table.add_row("Commands", "[cyan]'exit'[/cyan] to quit | [cyan]'profile'[/cyan] for memory | [cyan]'help'[/cyan] for skills")
 
-    console.print(Panel(status_table, title="[bold cyan]SYSTEM DIAGNOSTICS[/bold cyan]", border_style="cyan"))
+    console.print(Panel(status_table, title="[bold cyan]SYSTEM DIAGNOSTICS & PERMISSIONS[/bold cyan]", border_style="cyan"))
     console.print()
 
 
 def show_help():
-    table = Table(title="S.H.I.V.A. - Action Capabilities", style="cyan")
-    table.add_column("Category", style="yellow")
-    table.add_column("Example Command", style="white")
+    table = Table(title="S.H.I.V.A. - Full Permission & Action Catalog", style="cyan")
+    table.add_column("Module", style="yellow")
+    table.add_column("Capability & Examples", style="white")
 
-    table.add_row("System Health", "Hey Shiva, check my battery and RAM status")
-    table.add_row("Open in VS Code", "Hey Shiva, open TechnoKart in VS Code")
-    table.add_row("Open in Antigravity", "Hey Shiva, open TechnoKart in Antigravity IDE")
-    table.add_row("Chrome Web", "Hey Shiva, open Chrome and search React 19 tutorial")
-    table.add_row("Developer Profiles", "Hey Shiva, open my GitHub profile / LeetCode")
-    table.add_row("File Inspection", "Hey Shiva, what files are inside TechnoKart?")
-    table.add_row("Read Code", "Hey Shiva, read the package.json of TechnoKart")
-    table.add_row("Edit Code", "Hey Shiva, change port 3000 to 5000 in .env")
-    table.add_row("Strict Safe Delete", "Enforces 2-step verification before deleting any file")
+    table.add_row("IDEs & Projects", "Open in VS Code or Antigravity ('open TechnoKart in Antigravity')")
+    table.add_row("App Management", "Open/Close ANY app ('launch Spotify', 'close VS Code', 'open Calculator')")
+    table.add_row("Terminal & Shell", "Run dev commands ('git status', 'git add .', 'git commit -m \"...\"', 'npm run dev')")
+    table.add_row("Git Security", "⛔ 'git push' is strictly BLOCKED. Boss pushes to remote manually.")
+    table.add_row("Media & Music", "Control Spotify ('play/pause', 'next song', 'volume up/down', 'mute')")
+    table.add_row("Chrome Web", "Google search, open websites, open GitHub / LeetCode profiles")
+    table.add_row("File Operations", "List files, read source code, find & replace specific text in files")
+    table.add_row("Deletion Guard", "⚠️ Strict 2-step verification required before deleting any file")
+    table.add_row("System Health", "Live Battery %, CPU load, RAM usage metrics")
     console.print(table)
     console.print()
 
@@ -64,8 +68,8 @@ def main():
     print_banner(brain, memory)
 
     greeting = (
-        f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Systems online, action skills armed. "
-        f"Awaiting your command, [bold yellow]{USER_TITLE}[/bold yellow]!"
+        f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] All desktop permissions active under your strict command. "
+        f"Awaiting instructions, [bold yellow]{USER_TITLE}[/bold yellow]!"
     )
     console.print(greeting)
     console.print()
@@ -78,7 +82,7 @@ def main():
                 continue
 
             if user_input.lower() in ["exit", "quit", "bye", "shutdown"]:
-                console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Standing down. Systems on standby, {USER_TITLE}!\n")
+                console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Standing down. Have a great day, {USER_TITLE}!\n")
                 break
 
             if user_input.lower() == "help":
@@ -105,7 +109,7 @@ def main():
                 note = user_input[9:].strip()
                 if note:
                     memory.add_note(note)
-                    console.print(f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Understood, {USER_TITLE}. Stored in long-term memory: '{note}'\n")
+                    console.print(f"[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Noted, {USER_TITLE}. Stored in long-term memory: '{note}'\n")
                 continue
 
             with console.status(f"[bold cyan]{ASSISTANT_NAME} is executing...[/bold cyan]", spinner="dots"):
@@ -114,7 +118,7 @@ def main():
             console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] {response}\n")
 
         except KeyboardInterrupt:
-            console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Interrupted. Goodbye, {USER_TITLE}!\n")
+            console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Interrupted. Standing by, {USER_TITLE}!\n")
             break
         except Exception as e:
             console.print(f"\n[bold red]Error:[/bold red] {e}\n")

@@ -62,7 +62,7 @@ def open_social_profile(platform: str) -> str:
 
 
 def open_application(app_name: str) -> str:
-    """Launches desktop applications on Windows (e.g. calculator, notepad, terminal, taskmgr)."""
+    """Launches any desktop application or system tool on Windows."""
     app = app_name.lower().strip()
     cmd_map = {
         "calculator": "calc.exe",
@@ -75,12 +75,57 @@ def open_application(app_name: str) -> str:
         "taskmgr": "taskmgr.exe",
         "chrome": CHROME_PATH,
         "explorer": "explorer.exe",
+        "file explorer": "explorer.exe",
+        "settings": "start ms-settings:",
+        "spotify": "cmd /c start spotify:",
+        "vscode": r'"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"',
+        "vs code": r'"C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd"',
+        "antigravity": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
+        "antigravity ide": r'"C:\Users\HP\AppData\Local\Programs\Antigravity IDE\Antigravity IDE.exe"',
     }
 
-    executable = cmd_map.get(app, app)
+    executable = cmd_map.get(app, f"start {app}")
     try:
         subprocess.Popen(executable, shell=True)
-        return f"Launched {app_name} successfully, Boss."
+        return f"Launched {app_name} successfully, Boss. 🚀"
     except Exception as e:
         return f"Failed to launch {app_name}: {e}"
+
+
+def close_application(app_name: str) -> str:
+    """Closes any running desktop application or process on Windows."""
+    app = app_name.lower().strip()
+    proc_map = {
+        "vscode": ["Code.exe"],
+        "vs code": ["Code.exe"],
+        "code": ["Code.exe"],
+        "chrome": ["chrome.exe"],
+        "notepad": ["notepad.exe"],
+        "antigravity": ["Antigravity IDE.exe"],
+        "antigravity ide": ["Antigravity IDE.exe"],
+        "calculator": ["CalculatorApp.exe", "calc.exe"],
+        "calc": ["CalculatorApp.exe", "calc.exe"],
+        "spotify": ["Spotify.exe"],
+        "discord": ["Discord.exe"],
+        "whatsapp": ["WhatsApp.exe"],
+        "terminal": ["WindowsTerminal.exe", "wt.exe"],
+    }
+
+    target_procs = proc_map.get(app, [f"{app}.exe", app])
+    closed = 0
+    for p in psutil.process_iter(["name"]):
+        try:
+            p_name = p.info["name"] or ""
+            if any(t.lower() in p_name.lower() for t in target_procs):
+                p.terminate()
+                closed += 1
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+    if closed > 0:
+        return f"Closed {app_name} ({closed} process instance(s) terminated), Boss. ✅"
+    else:
+        return f"Boss, {app_name} doesn't appear to be running right now."
+
+
 
