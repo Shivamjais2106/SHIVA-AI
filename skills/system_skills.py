@@ -48,17 +48,45 @@ def search_google(query: str) -> str:
     return open_in_chrome(url)
 
 
+def open_portfolio() -> str:
+    """Opens Boss's live personal portfolio website in Google Chrome."""
+    open_in_chrome("https://shivamjaiswal-portfolio.vercel.app")
+    return "Boss, aapka personal portfolio Chrome browser mein open kar diya hai! 🚀"
+
+
 def open_social_profile(platform: str) -> str:
-    """Opens Boss's GitHub, LeetCode, or LinkedIn profile in Chrome."""
+    """Opens Boss's Portfolio, GitHub, LeetCode, or LinkedIn profile in Chrome."""
     platform_lower = platform.lower()
-    if "github" in platform_lower:
-        return open_in_chrome("https://github.com/Shivamjais2106")
+    if any(k in platform_lower for k in ["portfolio", "website", "my site"]):
+        return open_portfolio()
+    elif "github" in platform_lower:
+        open_in_chrome("https://github.com/Shivamjais2106")
+        return "Boss, aapka GitHub profile Chrome mein open kar diya hai."
     elif "leetcode" in platform_lower:
-        return open_in_chrome("https://leetcode.com/Shivamjais2303")
+        open_in_chrome("https://leetcode.com/Shivamjais2303")
+        return "Boss, aapka LeetCode profile Chrome mein open kar diya hai."
     elif "linkedin" in platform_lower:
-        return open_in_chrome("https://linkedin.com/in/shivam-jaiswal-37a951369")
+        open_in_chrome("https://linkedin.com/in/shivam-jaiswal-37a951369")
+        return "Boss, aapka LinkedIn profile Chrome mein open kar diya hai."
     else:
-        return f"Boss, unknown profile platform '{platform}'. Options are GitHub, LeetCode, or LinkedIn."
+        return f"Boss, unknown profile platform '{platform}'. Options are Portfolio, GitHub, LeetCode, or LinkedIn."
+
+
+def close_browser_tab() -> str:
+    """
+    Closes the currently active browser tab in Google Chrome using Ctrl+W without terminating the Chrome process.
+    """
+    try:
+        ps_cmd = (
+            "$ws = New-Object -ComObject WScript.Shell; "
+            "if ($ws.AppActivate('Google Chrome') -or $ws.AppActivate('Chrome')) { "
+            "Start-Sleep -Milliseconds 120; $ws.SendKeys('^{w}'); Write-Output 'Tab Closed' "
+            "} else { Write-Output 'No Chrome' }"
+        )
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True)
+        return "Chrome ka active tab close kar diya hai, Boss."
+    except Exception as e:
+        return f"Failed to close tab: {e}"
 
 
 def get_clean_env() -> dict:
@@ -80,7 +108,7 @@ def open_application(app_name: str) -> str:
         executable = vscode_cmd if os.path.exists(vscode_cmd) else "code"
         try:
             subprocess.Popen(f'"{executable}" -n', env=get_clean_env(), shell=True)
-            return "Launched VS Code successfully, Boss! 🚀"
+            return "Boss, VS Code open kar diya hai! 🚀"
         except Exception as e:
             return f"Failed to launch VS Code: {e}"
 
@@ -105,7 +133,7 @@ def open_application(app_name: str) -> str:
     executable = cmd_map.get(app, f"start {app}")
     try:
         subprocess.Popen(executable, shell=True)
-        return f"Launched {app_name} successfully, Boss. 🚀"
+        return f"Boss, {app_name} open kar diya hai! 🚀"
     except Exception as e:
         return f"Failed to launch {app_name}: {e}"
 
@@ -113,6 +141,11 @@ def open_application(app_name: str) -> str:
 def close_application(app_name: str) -> str:
     """Closes any running desktop application or process on Windows."""
     app = app_name.lower().strip()
+
+    # Safety guard: if user asks to close a tab or specific site, close the active tab instead of killing Chrome!
+    if any(k in app for k in ["tab", "github", "leetcode", "portfolio", "website"]):
+        return close_browser_tab()
+
     proc_map = {
         "vscode": ["Code.exe"],
         "vs code": ["Code.exe"],
@@ -141,9 +174,9 @@ def close_application(app_name: str) -> str:
             continue
 
     if closed > 0:
-        return f"Closed {app_name} ({closed} process instance(s) terminated), Boss. ✅"
+        return f"Boss, {app_name} close kar diya hai."
     else:
-        return f"Boss, {app_name} doesn't appear to be running right now."
+        return f"Boss, {app_name} abhi open nahi hai."
 
 
 

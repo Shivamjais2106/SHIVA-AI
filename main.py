@@ -55,6 +55,11 @@ def show_help():
 
     table.add_row("mic / voice mode", "Activates live Microphone listening (talk to Shiva hands-free)")
     table.add_row("voice on / voice off", "Toggle whether Shiva speaks replies aloud")
+    table.add_row("Hey Shiva, open LeetCode / GitHub / Portfolio", "Opens professional profiles & live portfolio in Chrome")
+    table.add_row("Hey Shiva, close tab / close github on chrome", "Closes active browser tab without terminating Chrome")
+    table.add_row("Hey Shiva, read emails / send email", "Checks Gmail inbox or composes emails")
+    table.add_row("Hey Shiva, send whatsapp message / call", "Sends WhatsApp message or starts a call")
+    table.add_row("Hey Shiva, simulate whatsapp / whatsapp bot", "Auto-responder with greeting & questions for unknown numbers")
     table.add_row("Hey Shiva, open TechnoKart in Antigravity", "Opens project in Antigravity IDE")
     table.add_row("Hey Shiva, open TechnoKart in VS Code", "Opens project in VS Code")
     table.add_row("Hey Shiva, check git status", "Checks branch, staged, modified, and untracked files (0 tokens)")
@@ -106,9 +111,11 @@ def run_voice_loop(brain: ShivaBrain, voice: ShivaVoice, memory: MemoryManager):
 
             with console.status(f"[bold cyan]{ASSISTANT_NAME} is processing...[/bold cyan]", spinner="dots"):
                 response = brain.generate_response(heard_text)
+                audio_path = voice.prepare_audio(response)
 
             console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] {response}\n")
-            voice.speak(response)
+            if audio_path:
+                voice.play_audio_sync(audio_path)
 
         except KeyboardInterrupt:
             console.print("\n[yellow]Voice mode paused. Returning to text mode.[/yellow]\n")
@@ -159,6 +166,29 @@ def main():
                 console.print(f"[bold yellow]Voice output muted.[/bold yellow] {ASSISTANT_NAME} will now reply in text only.\n")
                 continue
 
+            # Switch voice model dynamically
+            if user_input.lower().startswith("voice ") and user_input.lower() not in ["voice on", "voice off", "voice mode"]:
+                v_target = user_input.lower().replace("voice", "").replace("switch to", "").replace("change to", "").replace("set", "").strip()
+                msg = voice.set_voice(v_target)
+                console.print(f"[bold green]{msg}[/bold green]\n")
+                if voice_active:
+                    voice.speak(msg)
+                continue
+
+            if user_input.lower() in ["voices", "list voices", "show voices"]:
+                v_table = Table(title="Available Neural Voice Personas", style="cyan")
+                v_table.add_column("Key / Trigger", style="yellow")
+                v_table.add_column("Model Name", style="white")
+                v_table.add_column("Character / Tone", style="green")
+                v_table.add_row("voice prabhat", "en-IN-PrabhatNeural", "Natural Indian English (Best clarity & Hinglish)")
+                v_table.add_row("voice ryan", "en-GB-RyanNeural", "British Jarvis Style (Sharp & authoritative)")
+                v_table.add_row("voice christopher", "en-US-ChristopherNeural", "Deep AI Butler / Executive")
+                v_table.add_row("voice neerja", "en-IN-NeerjaNeural", "Expressive Indian English Female")
+                v_table.add_row("voice guy", "en-US-GuyNeural", "Conversational American Male")
+                v_table.add_row("voice madhur", "hi-IN-MadhurNeural", "Fluent Hindi / Hinglish Male")
+                console.print(v_table)
+                continue
+
             if user_input.lower() in ["exit", "quit", "bye", "shutdown"]:
                 console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Standing down. Systems on standby, {USER_TITLE}!\n")
                 if voice_active:
@@ -187,11 +217,12 @@ def main():
 
             with console.status(f"[bold cyan]{ASSISTANT_NAME} is processing...[/bold cyan]", spinner="dots"):
                 response = brain.generate_response(user_input)
+                audio_path = voice.prepare_audio(response) if voice_active else None
 
             console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] {response}\n")
 
-            if voice_active:
-                speak_in_background(voice, response)
+            if voice_active and audio_path:
+                voice.play_audio_async(audio_path)
 
         except KeyboardInterrupt:
             console.print(f"\n[bold cyan]{ASSISTANT_NAME}:[/bold cyan] Interrupted. Goodbye, {USER_TITLE}!\n")

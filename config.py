@@ -25,7 +25,10 @@ USER_TITLE = os.getenv("USER_TITLE", "Boss")
 USER_REAL_NAME = os.getenv("USER_REAL_NAME", "Shivam Jaiswal")
 
 # Voice
-VOICE_NAME = os.getenv("VOICE_NAME", "en-GB-RyanNeural")
+VOICE_NAME = os.getenv("VOICE_NAME", "en-IN-PrabhatNeural")
+VOICE_RATE = os.getenv("VOICE_RATE", "+0%")
+VOICE_PITCH = os.getenv("VOICE_PITCH", "+0Hz")
+VOICE_VOLUME = os.getenv("VOICE_VOLUME", "+0%")
 SPEECH_ENABLED = os.getenv("SPEECH_ENABLED", "false").lower() == "true"
 
 # Workspaces

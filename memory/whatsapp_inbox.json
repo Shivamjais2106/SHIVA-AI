@@ -1,0 +1,276 @@
+{
+  "messages": [
+    {
+      "timestamp": "2026-11-16T10:53:45.123753",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-16T10:53:45.144753",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-16T10:54:31.522225",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-16T10:54:31.545382",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-16T17:59:32.598350",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-16T17:59:32.621336",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T10:48:58.365809",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T10:48:58.389815",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T10:54:43.557300",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T10:54:43.580473",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:15:19.417912",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:15:19.556752",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:27:30.030632",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:27:30.124714",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:46:06.565407",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:46:58.062505",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:48:08.805848",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T11:48:26.751868",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:04:56.650151",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:05:16.789970",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:37:31.291744",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:37:49.808781",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:49:13.031097",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-17T12:49:32.997106",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-19T15:26:26.335588",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-19T15:26:57.355287",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-19T15:27:31.029298",
+      "sender_phone": "+919988776655",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hi, I want to inquire about a project.",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
+    }
+  ],
+  "auto_responder_enabled": true,
+  "last_updated": "2026-11-19T15:27:31.029298"
+}

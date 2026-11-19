@@ -1,0 +1,17 @@
+{
+  "contacts": [
+    {
+      "name": "Shivam Jaiswal",
+      "phone": "+917869037289",
+      "relationship": "Boss / Self",
+      "is_known": true
+    },
+    {
+      "name": "Office",
+      "phone": "+919876543210",
+      "relationship": "Workplace",
+      "is_known": true
+    }
+  ]
+}
+
