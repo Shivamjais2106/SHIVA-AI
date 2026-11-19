@@ -70,5 +70,29 @@
   {
     "role": "assistant",
     "content": "Boss, I can fetch the latest news for you. Shall I search \"latest news today\" on Google?"
+  },
+  {
+    "role": "user",
+    "content": "news tell me today"
+  },
+  {
+    "role": "assistant",
+    "content": "Boss, aaj ke Top News Headlines maine fetch kar liye hain: Pehli badi khabar: 'Xi, Trump, Putin exchange greetings before historic China summit' (The Hindu). Doosri khabar: 'Cyclone 'Akvan' LIVE updates: Over one lakh evacuated in Odisha as landfall likely near Gopalpur; red alert for three A.P. districts' (The Hindu). Teesri update: 'PM Modi urges industries to make ‘India First’ the foundation of long-term investment decisions' (News On AIR). Chauthi khabar: 'India's game developers helped build Grand Theft Auto VI. Now they want to create hits of their own' (CNA). Iske alava 1 aur news updates available hain. Kya aap kisi specific khabar ke baare mein detail jaanna chahte hain, Boss?"
+  },
+  {
+    "role": "user",
+    "content": "tech news"
+  },
+  {
+    "role": "assistant",
+    "content": "Boss, aaj ke Tech & AI Headlines maine fetch kar liye hain: Pehli badi khabar: '‘Most extraordinary virtual world’: critics hail Grand Theft Auto VI as masterpiece' (The Guardian). Doosri khabar: ''GTA flu' decimates workplaces as 13-year wait for 'GTA VI' ends' (Yahoo). Teesri update: 'GTA 6's Bengaluru link: Tejasvi Surya says 1,600 developers worked on game' (India Today). Chauthi khabar: 'MicroRNA, the New Genetic Frontier of Gallbladder Carcinoma' (EMJ). Iske alava 1 aur news updates available hain. Kya aap kisi specific khabar ke baare mein detail jaanna chahte hain, Boss?"
+  },
+  {
+    "role": "user",
+    "content": "weather today"
+  },
+  {
+    "role": "assistant",
+    "content": "Boss, Bhopal mein aaj mausam Sunny hai. Temperature +25°C hai, hawa ki speed ↙14km/h aur humidity 26% chal rahi hai."
   }
 ]

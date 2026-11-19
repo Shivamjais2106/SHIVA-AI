@@ -269,8 +269,18 @@
       "auto_replied": true,
       "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
       "status": "inquiry_pending"
+    },
+    {
+      "timestamp": "2026-11-19T15:28:00.424916",
+      "sender_phone": "+919123456789",
+      "sender_name": "Unknown",
+      "is_known_contact": false,
+      "message": "Hello, are you available for hiring?",
+      "auto_replied": true,
+      "auto_reply_sent": "Namaste! 🙏\nYou have reached the personal contact of Shivam Jaiswal.\nI am SHIVA, Shivam's synthetic AI Assistant.\n\nBoss (Shivam) is currently focused on development work and away from his desk. To help him assist you promptly, please reply with:\n1️⃣ What is your Full Name & Organization / Reference?\n2️⃣ What is the purpose of your message?\n3️⃣ Urgency level (Urgent / Normal / For Information)?\n\nThank you! Your inquiry has been registered, and Shivam will get back to you shortly. ✨",
+      "status": "inquiry_pending"
     }
   ],
   "auto_responder_enabled": true,
-  "last_updated": "2026-11-19T15:27:31.029298"
+  "last_updated": "2026-11-19T15:28:00.424916"
 }
